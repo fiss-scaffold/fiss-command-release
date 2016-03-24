@@ -12,7 +12,9 @@ fis.media('prod')
 	    'live':true,*/ //对应命令行的-L参数
 	    'clean':false, //对应命令行的-c参数
 	    /*'lint':true,*///对应命令行的-l参数
-	    'clear':true //每次release之前是否先清空dest目录
+	    //每次release的时候是否把dest目录清空，
+    	    //注意，如果启动watch/live时，需要把clean设置为true，因为默认只是增量release，而每次清空目录，每次只会重新构建变动的文件,当clean为true时，不会判断缓存，全量进行release
+	    'clear':true 
 	});
 
 
