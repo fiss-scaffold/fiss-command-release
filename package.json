@@ -1,11 +1,11 @@
 {
   "name": "fiss-command-release",
   "description": "fis3-command-release的修改版，使得release的命令行参数可以在fis-conf文件中可配置",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "fengyang321@gmail.com",
   "keywords": [
     "fis",
-	"fis-command-release"
+    "fis-command-release"
   ],
   "repository": {
     "type": "git",
