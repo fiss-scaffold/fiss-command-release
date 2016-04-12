@@ -78,6 +78,24 @@ exports.run = function(argv, cli, env) {
 
   var app = require('./lib/chains.js')();
 
+   //清除dest目录
+  app.use(function(options,next){
+    //clear dest/*
+    //if(options.clear && options.dest !== 'preview'){
+    if(options.clear){
+      fis.log.info('clear dir %s',dest);
+      //为什么不直接用_.del(destPath),是因为dest=preview时,部署的www文件夹只读，不能删除，否则报错，而_.del最后会删除这个文件夹
+      var destPath = _.realpath(dest);
+      destPath && fs.readdirSync(destPath).forEach(function(name) {
+        if (name != '.' && name != '..') {
+          //server.log 这个文件排除掉 
+           _.del(destPath + '/' + name, null,['server.log']);
+        }
+      });
+    }
+    next(null, options);
+  });
+  
   app.use(function(options, next) {
 
     // clear cache?
@@ -101,23 +119,7 @@ exports.run = function(argv, cli, env) {
 
   // watch it?
   options.watch && app.use(watch);
-  //清除dest目录
-  app.use(function(options,next){
-    //clear dest/*
-    //if(options.clear && options.dest !== 'preview'){
-    if(options.clear){
-      fis.log.info('clear dir %s',dest);
-      //为什么不直接用_.del(destPath),是因为dest=preview时,部署的www文件夹只读，不能删除，否则报错，而_.del最后会删除这个文件夹
-      var destPath = _.realpath(dest);
-      destPath && fs.readdirSync(destPath).forEach(function(name) {
-        if (name != '.' && name != '..') {
-          //server.log 这个文件排除掉 
-           _.del(destPath + '/' + name, null,['server.log']);
-        }
-      });
-    }
-    next(null, options);
-  });
+ 
   app.use(release);
 
   // 处理 livereload 脚本
